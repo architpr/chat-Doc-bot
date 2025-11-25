@@ -1,15 +1,3 @@
-import streamlit as st
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-from dotenv import load_dotenv
-import os
-def text_to_speech(text):
-    """Converts text to speech and returns the audio bytes."""
-    try:
-        tts = gTTS(text=text, lang='en')
-        audio_fp = io.BytesIO()
-        tts.write_to_fp(audio_fp)
         audio_fp.seek(0)
         return audio_fp.read()
     except Exception as e:
