@@ -15,6 +15,7 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_groq import ChatGroq
 from langchain.chains import RetrievalQA
+from langchain.prompts import PromptTemplate
 
 # Load environment variables
 load_dotenv()
@@ -51,16 +52,31 @@ def setup_rag_chain(source_docs, model_name):
     retriever = vector_store.as_retriever(search_kwargs={"k": 3})
     
     # Initialize the LLM
-    llm = ChatGroq(model_name=model_name, temperature=0.7)
+    llm = ChatGroq(model_name=model_name, temperature=0.3)
+    
+    # Define a custom prompt
+    prompt_template = """Use the following pieces of context to answer the question at the end. 
+    If you don't know the answer, just say that you don't know, don't try to make up an answer.
+    
+    Context: {context}
+    
+    Question: {question}
+    
+    Helpful Answer:"""
+    
+    PROMPT = PromptTemplate(
+        template=prompt_template, input_variables=["context", "question"]
+    )
+    
+    chain_type_kwargs = {"prompt": PROMPT}
     
     # Create the RAG chain
-    # --- NEW FEATURE: Show Sources ---
-    # We add `return_source_documents=True` to get the source chunks.
     return RetrievalQA.from_chain_type(
         llm=llm, 
         chain_type="stuff", 
         retriever=retriever,
-        return_source_documents=True
+        return_source_documents=True,
+        chain_type_kwargs=chain_type_kwargs
     )
 
 # --- Main App Logic ---
