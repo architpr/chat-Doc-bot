@@ -1,12 +1,9 @@
-fastapi
-uvicorn[standard]
 langchain==0.1.20
 langchain-community==0.0.38
 langchain-groq
 chromadb
 sentence-transformers
 python-dotenv
-unstructured
 streamlit
 gTTS
 pypdf
