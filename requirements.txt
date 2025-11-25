@@ -7,3 +7,8 @@ chromadb
 sentence-transformers
 python-dotenv
 unstructured
+streamlit
+gTTS
+pypdf
+beautifulsoup4
+pysqlite3-binary
