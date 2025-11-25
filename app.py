@@ -4,23 +4,6 @@ import sys
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 from dotenv import load_dotenv
 import os
-import tempfile
-from gtts import gTTS
-import io
-
-# Import the LangChain components
-from langchain_community.document_loaders import PyPDFLoader, TextLoader, WebBaseLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.vectorstores import Chroma
-from langchain_groq import ChatGroq
-from langchain.chains.retrieval_qa.base import RetrievalQA
-
-# Load environment variables
-load_dotenv()
-
-# --- Helper Functions ---
-
 def text_to_speech(text):
     """Converts text to speech and returns the audio bytes."""
     try:
