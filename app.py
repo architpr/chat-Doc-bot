@@ -1,3 +1,32 @@
+import streamlit as st
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+from dotenv import load_dotenv
+import os
+import tempfile
+from gtts import gTTS
+import io
+
+# Import the LangChain components
+from langchain_community.document_loaders import PyPDFLoader, TextLoader, WebBaseLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import Chroma
+from langchain_groq import ChatGroq
+from langchain.chains import RetrievalQA
+
+# Load environment variables
+load_dotenv()
+
+# --- Helper Functions ---
+
+def text_to_speech(text):
+    """Converts text to speech and returns the audio bytes."""
+    try:
+        tts = gTTS(text=text, lang='en')
+        audio_fp = io.BytesIO()
+        tts.write_to_fp(audio_fp)
         audio_fp.seek(0)
         return audio_fp.read()
     except Exception as e:
